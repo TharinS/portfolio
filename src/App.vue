@@ -1,30 +1,26 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, onMounted } from 'vue'
+import UpdateNotice from './components/UpdateNotice.vue'
+
+// read the query param once on load – no persistence
+const debug = ref(false)
+
+onMounted(() => {
+  const q = new URLSearchParams(window.location.search).get('debug')
+  debug.value = (q === 'true')
+})
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
+  <!-- Default: show the notice -->
+  <UpdateNotice v-if="!debug" />
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+  <!-- Preview/WIP when ?debug=true -->
+  <div v-else>
+    <header style="padding:1rem 1.25rem">My Portfolio <small>(preview)</small></header>
+    <section style="padding:1.25rem">
+      <!-- put your WIP content here -->
+      <p>👋 Preview mode enabled. Build in progress…</p>
+    </section>
+  </div>
+</template>
